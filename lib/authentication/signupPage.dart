@@ -168,7 +168,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             CustomBottomScreen(
                               textButton: 'Sign Up',
                               heroTag: 'signup_btn',
-                              question: 'Already Have an account?',
+                              question: 'Already Have an account? ',
                               buttonPressed: () async {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 setState(() {
