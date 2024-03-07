@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "407879953219",
+    "project_id": "sih2-d9a0b",
+    "storage_bucket": "sih2-d9a0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407879953219:android:3a5fa5d82cf6f51a029df6",
+        "android_client_info": {
+          "package_name": "com.example.demo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmQuPqLB4mZazrCDjZ1w67Bj4wamB1T_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407879953219:android:ac52efc8a2b514fe029df6",
+        "android_client_info": {
+          "package_name": "com.medsmart.newapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmQuPqLB4mZazrCDjZ1w67Bj4wamB1T_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
