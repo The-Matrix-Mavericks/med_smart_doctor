@@ -1,10 +1,8 @@
-import 'package:demo_app/authentication/loginOrSignupPage.dart';
-import 'package:demo_app/authentication/loginPage.dart';
-import 'package:demo_app/authentication/signupPage.dart';
+import 'package:demo_app/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'screens/mainScreen.dart';
+import 'package:get/get.dart';
+import 'Components/text_styles.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,16 +15,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Epilogue',
+        textTheme: const TextTheme(
+          bodyMedium: CustomStyle.defaultTextStyle,
+        ),
+      ),
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-      routes: {
-        HomeScreen.id: (context) => HomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        SignUpScreen.id: (context) => SignUpScreen(),
-        MainScreen.id: (context) => MainScreen(),
-        // InputPage.id: (context) => InputPage(),
-      },
+      home: SplashScreen(),
     );
   }
 }

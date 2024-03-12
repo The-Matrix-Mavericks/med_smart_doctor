@@ -1,8 +1,7 @@
+import 'package:demo_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 // import 'package:login_app/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
-import 'constants.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton(
@@ -166,6 +165,7 @@ class CustomBottomScreen extends StatelessWidget {
   final String textButton;
   final String question;
   final String heroTag;
+
   final Function buttonPressed;
   final Function questionPressed;
 
