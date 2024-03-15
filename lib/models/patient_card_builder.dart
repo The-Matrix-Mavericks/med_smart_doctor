@@ -1,19 +1,36 @@
 import 'package:demo_app/Components/text_styles.dart';
+import 'package:demo_app/constants/constants.dart';
 import 'package:demo_app/theme/colors.dart';
 import 'package:demo_app/widgets/primary_buttons.dart';
 import 'package:flutter/material.dart';
+import "dart:math";
 
-class ConsultantItem extends StatelessWidget {
+import 'package:velocity_x/velocity_x.dart';
+
+String getRandomElement<String>() {
+  List list = ['1.jpg', '2.jpg', '3.jpg', '4.jpeg'];
+  final random = new Random();
+  var i = random.nextInt(list.length);
+  return list[i];
+}
+
+class PatientCardBuilder extends StatelessWidget {
   final String name;
-  final String degree;
-  final String imageUrl;
+  final String gender;
+  final String age;
+  final String phone;
+  final String profession;
+  String? imageUrl;
   final String date;
   final String time;
 
-  const ConsultantItem({
+  PatientCardBuilder({
     required this.name,
-    required this.degree,
-    required this.imageUrl,
+    required this.gender,
+    required this.age,
+    required this.phone,
+    required this.profession,
+    this.imageUrl,
     required this.date,
     required this.time,
     super.key,
@@ -21,14 +38,15 @@ class ConsultantItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    imageUrl = getRandomElement();
     return GestureDetector(
       onTap: () {},
       child: Container(
         width: 325.0,
-        height: 185,
+        height: 170,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: AppColors.secondaryColor,
+          color: Color.fromARGB(255, 219, 221, 255),
         ),
         child: Stack(
           alignment: Alignment.center,
@@ -36,9 +54,10 @@ class ConsultantItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 20.0,
-                horizontal: 15.0,
+                horizontal: 14.0,
               ),
               child: Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
@@ -47,7 +66,7 @@ class ConsultantItem extends StatelessWidget {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
                               radius: 22,
@@ -56,6 +75,11 @@ class ConsultantItem extends StatelessWidget {
                                 radius: 20,
                                 backgroundImage:
                                     AssetImage('assets/images/$imageUrl'),
+                                // child: Icon(
+                                //   Icons.person,
+                                //   color: Colors.white,
+                                //   size: 18,
+                                // ),
                               ),
                             ),
                             const SizedBox(
@@ -67,7 +91,7 @@ class ConsultantItem extends StatelessWidget {
                                 Text(
                                   name,
                                   style: CustomStyle.defaultTextStyle.copyWith(
-                                    fontSize: 14,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -75,7 +99,7 @@ class ConsultantItem extends StatelessWidget {
                                   height: 3,
                                 ),
                                 Text(
-                                  degree,
+                                  "${profession.toUpperCase()}  $age years    ${gender.toUpperCase()}",
                                   style:
                                       CustomStyle.descriptionTextStyle.copyWith(
                                     fontSize: 12,
@@ -84,10 +108,18 @@ class ConsultantItem extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            Text(
+                              "View details",
+                              style: CustomStyle.defaultTextStyle.copyWith(
+                                fontSize: 12,
+                                color: kTextColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(
-                          height: 24,
+                          height: 20,
                           child: Divider(),
                         ),
                         Row(
@@ -134,10 +166,31 @@ class ConsultantItem extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            Expanded(
+                              flex: 1,
+                              child: Wrap(
+                                spacing: 8,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.phone,
+                                    size: 12,
+                                    color: AppColors.darkGrayColor,
+                                  ),
+                                  Text(
+                                    phone,
+                                    style: CustomStyle.descriptionTextStyle
+                                        .copyWith(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Row(
                           children: [
@@ -145,30 +198,29 @@ class ConsultantItem extends StatelessWidget {
                             const SizedBox(
                               width: 36,
                             ),
-                            TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: const Size(50, 30),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                alignment: Alignment.centerLeft,
-                              ),
-                              child: Text(
-                                'Join Now',
-                                style: CustomStyle.defaultTextStyle.copyWith(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            ),
+                            const PrimaryWhiteButton(title: 'Chat'),
+                            // TextButton(
+                            //   onPressed: () {},
+                            //   style: TextButton.styleFrom(
+                            //     padding: EdgeInsets.zero,
+                            //     side: BorderSide(color: Vx.white),
+                            //     minimumSize: const Size(50, 30),
+                            //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            //     alignment: Alignment.centerLeft,
+                            //   ),
+                            //   child: Text(
+                            //     'Chat',
+                            //     style: CustomStyle.defaultTextStyle.copyWith(
+                            //       fontSize: 14,
+                            //       fontWeight: FontWeight.bold,
+                            //       color: AppColors.primaryColor,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 16,
                   ),
                 ],
               ),
