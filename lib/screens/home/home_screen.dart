@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //   super.initState();
   // }
 
-    String selectedValue = 'All Sessions';
+  String selectedValue = 'All Sessions';
 
   Widget build(BuildContext context) {
     var controller = Get.put(SettingsController());
@@ -165,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   void _showDropdown(BuildContext context) {
     final List<String> options = [
       'Session 1',

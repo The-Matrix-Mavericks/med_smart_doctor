@@ -1,20 +1,23 @@
 import 'package:demo_app/screens/authentication/loginOrSignupPage.dart';
 import 'package:demo_app/screens/home/home.dart';
 import 'package:demo_app/screens/home/home_screen.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
-
+import 'dart:io';
 
 class AuthController extends GetxController {
   UserCredential? userCredential;
+  // File? _selectedImage;
+  File? _pickedImageFile;
   var fullnameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
-  // controllers for signup 
+  // controllers for signup
   var signup_emailController = TextEditingController();
   var signup_passwordController = TextEditingController();
 
@@ -60,27 +63,56 @@ class AuthController extends GetxController {
   loginUser(context) async {
     userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text, password: passwordController.text);
+    print("Login in user credential ${userCredential}");
     if (userCredential != null) {
       VxToast.show(context, msg: "Login successful");
       Get.to(() => const Home());
     }
   }
 
-  signupUser(bool isDoctor, context) async {
-    userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: signup_emailController.text, password: signup_passwordController.text);
-    if (userCredential != null) {
-      await storeUserdata(userCredential!.user!.uid, fullnameController.text,
-          signup_emailController.text, isDoctor);
+  signupUser(bool isDoctor, context, File _selectedImage) async {
+    try {
+      userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: signup_emailController.text,
+              password: signup_passwordController.text);
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child("doctor_images")
+          .child("${userCredential!.user!.uid}.jpg");
+
+      // pushing the image on the firebase storage
+      await storageRef.putFile(_selectedImage!);
+
+      // Download image url or render the image on image by using this url
+      final imageUrl = await storageRef.getDownloadURL();
+      print('this is doctor imageg url -->\n\n ${imageUrl}');
+      print("Sign UP Doctor Creadential \n ${userCredential}");
       if (userCredential != null) {
-        Get.to(() => Home());
-        VxToast.show(context, msg: "Signup successful");
+        await storeUserdata(userCredential!.user!.uid, fullnameController.text,
+            signup_emailController.text, isDoctor, imageUrl);
+
+        if (userCredential != null) {
+          Get.to(() => Home());
+          VxToast.show(context, msg: "Signup successful");
+        }
       }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == 'email-already-in-user') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "The email address is already in use by another account.")));
+      }
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text("Something Went Wrong!! Try to Fill with All Details")));
     }
   }
 
-  storeUserdata(
-      String uid, String fullname, String email, bool isDoctor) async {
+  storeUserdata(String uid, String fullname, String email, bool isDoctor,
+      String imageUrl) async {
+    print("Doctor Image Url ${imageUrl}");
     var store = FirebaseFirestore.instance
         .collection(isDoctor ? 'doctor' : 'user')
         .doc(uid);
@@ -96,7 +128,10 @@ class AuthController extends GetxController {
         'docID': FirebaseAuth.instance.currentUser?.uid,
         'docRating': 1,
         'docEmail': email,
+        'docImage': imageUrl,
       });
+
+      print("Data has been sent to the firestore");
     } else {
       await store.set({
         'fullname': fullname,

@@ -9,9 +9,14 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SettingssView extends StatelessWidget {
+class SettingssView extends StatefulWidget {
   SettingssView({super.key});
 
+  @override
+  State<SettingssView> createState() => _SettingssViewState();
+}
+
+class _SettingssViewState extends State<SettingssView> {
   var settingsList = [
     "Change Password",
     "Payment Setup",
@@ -76,7 +81,7 @@ class SettingssView extends StatelessWidget {
                       endIndent: 10,
                       indent: 10,
                     ),
-                    // 5.heightBox,
+                    // 5.heightBox,s
                     ListView(
                       shrinkWrap: true,
                       children: List.generate(

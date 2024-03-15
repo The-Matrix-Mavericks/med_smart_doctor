@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:demo_app/Components/components.dart';
 import 'package:demo_app/Controllers/auth_controller.dart';
 import 'package:demo_app/screens/authentication/loginOrSignupPage.dart';
 import 'package:demo_app/screens/authentication/loginPage.dart';
 import 'package:demo_app/constants/constants.dart';
 import 'package:demo_app/screens/home/home.dart';
+import 'package:demo_app/widgets/user_image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +25,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  File? _selectedImage;
+
   final _auth = FirebaseAuth.instance;
   late String _email;
   late String _name;
@@ -87,6 +92,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          UserImagePicker(
+                            onPickImage: (pickedImage) {
+                              _selectedImage = pickedImage;
+                            },
+                          ),
                           // const ScreenTitle(title: 'Sign Up'),
                           CustomTextFieldWithFieldName(
                             textField: TextField(
@@ -332,7 +342,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             heroTag: 'signup_btn',
                             question: 'Already Have an account? ',
                             buttonPressed: () async {
-                              controller.signupUser(true, context);
+                              controller.signupUser(
+                                  true, context, _selectedImage!);
                             },
                             questionPressed: () async {
                               Navigator.push(
