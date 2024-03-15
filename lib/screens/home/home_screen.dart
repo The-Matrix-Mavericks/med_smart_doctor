@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_app/Components/text_styles.dart';
+import 'package:demo_app/Controllers/appointment_controller.dart';
 import 'package:demo_app/Controllers/settings_controller.dart';
 import 'package:demo_app/models/consultant.dart';
+import 'package:demo_app/models/patient_card_builder.dart';
+import 'package:demo_app/screens/home/appointment_details.dart';
 import 'package:demo_app/theme/colors.dart';
 import 'package:demo_app/widgets/banner_card.dart';
 import 'package:demo_app/widgets/consultant_item.dart';
@@ -42,6 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget build(BuildContext context) {
     var controller = Get.put(SettingsController());
+    var appointment_controller = Get.put(AppointmentController());
+    var appointment_list = appointment_controller.getAppointments();
     return SafeArea(
       child: Obx(
         () => Column(
@@ -130,34 +136,81 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 10,
             ),
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemCount: consultantList.length,
-              itemBuilder: (context, index) {
-                Consultant list = consultantList[index];
-                String formattedDate =
-                    DateFormat("d MMMM ''yy").format(list.datetime);
-                String formattedStartTime =
-                    DateFormat("h:mm a").format(list.datetime);
-                String formattedEndTime = DateFormat("h:mm a")
-                    .format(list.datetime.add(const Duration(hours: 1)));
-                String formattedDateTimeRange =
-                    '$formattedStartTime - $formattedEndTime';
 
-                return Container(
-                  margin: const EdgeInsets.only(
-                    bottom: 12,
-                  ),
-                  child: ConsultantItem(
-                    name: list.name,
-                    degree: list.degree,
-                    imageUrl: list.imageUrl,
-                    date: formattedDate,
-                    time: formattedDateTimeRange,
-                  ),
-                );
+            // ListView.builder(
+            //   scrollDirection: Axis.vertical,
+            //   shrinkWrap: true,
+            //   physics: const BouncingScrollPhysics(),
+            //   itemCount: consultantList.length,
+            //   itemBuilder: (context, index) {
+            //     Consultant list = consultantList[index];
+            //     String formattedDate =
+            //         DateFormat("d MMMM ''yy").format(list.datetime);
+            //     String formattedStartTime =
+            //         DateFormat("h:mm a").format(list.datetime);
+            //     String formattedEndTime = DateFormat("h:mm a")
+            //         .format(list.datetime.add(const Duration(hours: 1)));
+            //     String formattedDateTimeRange =
+            //         '$formattedStartTime - $formattedEndTime';
+            //     return Container(
+            //       margin: const EdgeInsets.only(
+            //         bottom: 12,
+            //       ),
+            //       child: ConsultantItem(
+            //         name: list.name,
+            //         degree: list.degree,
+            //         imageUrl: list.imageUrl,
+            //         date: formattedDate,
+            //         time: formattedDateTimeRange,
+            //       ),
+            //     );
+            //   },
+            // ),
+
+            FutureBuilder(
+              future: appointment_controller.getAppointments(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  var data = snapshot.data!.docs;
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: data?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      var app_list = data[index];
+                      print(app_list);
+                      // String formattedDate = DateFormat("d MMMM ''yy")
+                      //     .format(app_list['appointmentDate']);
+                      // String formattedStartTime = DateFormat("h:mm a")
+                      //     .format(app_list['appointmentTime']);
+                      // String formattedEndTime = DateFormat("h:mm a")
+                      //     .format(list.datetime.add(const Duration(hours: 1)));
+                      // String formattedDateTimeRange =
+                      //     '$formattedStartTime - $formattedEndTime';
+
+                      return Container(
+                        margin: const EdgeInsets.only(
+                          bottom: 12,
+                        ),
+                        child: PatientCardBuilder(
+                          name: app_list['appointmentName'],
+                          date: app_list['appointmentDay'],
+                          time: app_list['appointmentTime'],
+                          gender: 'maleee',
+                          phone: app_list['appointmentMobileNo'],
+                          age: '78',
+                          profession: 'studd',
+                        ),
+                      );
+                    },
+                  );
+                }
               },
             ),
           ],
