@@ -6,9 +6,9 @@ class Functions {
     final _firestore = FirebaseFirestore.instance;
     final _auth = FirebaseAuth.instance;
     final data = {
-      'docName': _auth.currentUser!.displayName ?? _auth.currentUser!.email,
+      // 'docName': _auth.currentUser!.displayName ?? _auth.currentUser!.email,
       'date_time': DateTime.now(),
-      'docEmail': _auth.currentUser!.email,
+      // 'docEmail': _auth.currentUser!.email,
     };
     try {
       _firestore.collection('doctor').doc(_auth.currentUser!.uid).update(data);
