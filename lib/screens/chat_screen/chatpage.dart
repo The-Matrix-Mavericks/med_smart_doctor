@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 // import 'package:image/comps/styles.dart';
 // import 'package:image/comps/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:demo_app/screens/chat_screen/vediocall.dart';
 
 class ChatPage extends StatefulWidget {
   final String id;
   final String name;
-  const ChatPage({Key? key, required this.id, required this.name}) : super(key: key);
+  const ChatPage({Key? key, required this.id, required this.name})
+      : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -20,6 +22,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   var roomId;
+  // final callIDTextCtrl = TextEditingController(text: "testCallID");
   @override
   Widget build(BuildContext context) {
     final firestore = FirebaseFirestore.instance;
@@ -27,10 +30,14 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: Colors.indigo.shade400,
       appBar: AppBar(
         backgroundColor: Colors.indigo.shade400,
-        title:  Text(widget.name),
+        title: Text(widget.name),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+          IconButton(onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CallPage(callID: roomId.toString());
+            }));
+          }, icon: const Icon(Icons.call))
         ],
       ),
       body: Column(
@@ -48,17 +55,23 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 const Spacer(),
                 StreamBuilder(
-                  stream: firestore.collection('user').doc(widget.id).snapshots(),
-                  builder: (context,AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-                    return !snapshot.hasData?Container(): Text(
-                      'Last seen : ' + DateFormat('hh:mm a').format(snapshot.data!['date_time'].toDate()),
-                      style: Styles.h1().copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white70),
-                    );
-                  }
-                ),
+                    stream:
+                        firestore.collection('user').doc(widget.id).snapshots(),
+                    builder: (context,
+                        AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                            snapshot) {
+                      return !snapshot.hasData
+                          ? Container()
+                          : Text(
+                              'Last seen : ' +
+                                  DateFormat('hh:mm a').format(
+                                      snapshot.data!['date_time'].toDate()),
+                              style: Styles.h1().copyWith(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white70),
+                            );
+                    }),
                 const Spacer(),
                 const SizedBox(
                   width: 50,
@@ -103,7 +116,8 @@ class _ChatPageState extends State<ChatPage> {
                                           itemBuilder: (context, i) {
                                             return ChatWidgets.messagesCard(
                                                 snap.data!.docs[i]['sent_by'] ==
-                                                    FirebaseAuth.instance.currentUser!.uid,
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
                                                 snap.data!.docs[i]['message'],
                                                 DateFormat('hh:mm a').format(
                                                     snap.data!
@@ -134,7 +148,7 @@ class _ChatPageState extends State<ChatPage> {
           Container(
             color: Colors.white,
             child: ChatWidgets.messageField(onSubmit: (controller) {
-              if(controller.text.toString() != ''){
+              if (controller.text.toString() != '') {
                 if (roomId != null) {
                   Map<String, dynamic> data = {
                     'message': controller.text.trim(),
