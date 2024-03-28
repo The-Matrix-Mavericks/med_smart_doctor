@@ -9,6 +9,7 @@ import 'package:demo_app/theme/colors.dart';
 import 'package:demo_app/widgets/banner_card.dart';
 import 'package:demo_app/widgets/consultant_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -175,6 +176,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
+                } else if (snapshot.data!.docs.length == 0) {
+                  return Container(
+                    child: Column(
+                      children: [
+                        Image.asset('assets/waiting.jpg',
+                            height: MediaQuery.of(context).size.height * 0.25),
+                        Text(
+                          "No appointments",
+                          style: CustomStyle.defaultTextStyle.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 } else {
                   var data = snapshot.data!.docs;
                   return ListView.builder(
@@ -194,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       // String formattedDateTimeRange =
                       //     '$formattedStartTime - $formattedEndTime';
 
+                      var appId = snapshot.data!.docs[index].reference.id;
                       return Container(
                         margin: const EdgeInsets.only(
                           bottom: 12,
@@ -205,7 +223,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           gender: 'maleee',
                           phone: app_list['appointmentMobileNo'],
                           age: '78',
+                          appID: appId,
                           profession: 'studd',
+                          patientID: app_list['appointmentBy'],
                         ),
                       );
                     },

@@ -51,4 +51,19 @@ class AppointmentController extends GetxController {
     //           isEqualTo: FirebaseAuth.instance.currentUser?.uid)
     //       .get();
   }
+
+  rescheduleAppointment(String appID, String newDate, String newDay,
+      String newTime, context) async {
+    isLoading(true);
+    var store = FirebaseFirestore.instance.collection('appointment').doc(appID);
+    await store.update({
+      // user id from USER collection
+      'appointmentDay': newDay, // selected day for appointment
+      'appointmentTime': newTime, // selected time for appointment
+      'appointmentDate': newDate, // selected time for appointment
+    });
+    isLoading(false);
+    VxToast.show(context, msg: "Appointment rescheduled successfully");
+    Get.back();
+  }
 }

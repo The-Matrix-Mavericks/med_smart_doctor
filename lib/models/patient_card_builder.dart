@@ -1,8 +1,11 @@
 import 'package:demo_app/Components/text_styles.dart';
 import 'package:demo_app/constants/constants.dart';
+import 'package:demo_app/screens/home/patient_details_screen.dart';
+import 'package:demo_app/screens/home/reschedule_screen.dart';
 import 'package:demo_app/theme/colors.dart';
 import 'package:demo_app/widgets/primary_buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import "dart:math";
 
 import 'package:velocity_x/velocity_x.dart';
@@ -18,10 +21,12 @@ class PatientCardBuilder extends StatelessWidget {
   final String name;
   final String gender;
   final String age;
+  final String patientID;
   final String phone;
   final String profession;
   String? imageUrl;
   final String date;
+  final String appID;
   final String time;
 
   PatientCardBuilder({
@@ -29,11 +34,13 @@ class PatientCardBuilder extends StatelessWidget {
     required this.gender,
     required this.age,
     required this.phone,
+    required this.appID,
     required this.profession,
     this.imageUrl,
     required this.date,
     required this.time,
     super.key,
+    required this.patientID,
   });
 
   @override
@@ -108,12 +115,19 @@ class PatientCardBuilder extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Text(
-                              "View details",
-                              style: CustomStyle.defaultTextStyle.copyWith(
-                                fontSize: 12,
-                                color: kTextColor,
-                                fontWeight: FontWeight.w600,
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(() => PatientDetailScreen(
+                                      patientID: patientID,
+                                    ));
+                              },
+                              child: Text(
+                                "View details",
+                                style: CustomStyle.defaultTextStyle.copyWith(
+                                  fontSize: 12,
+                                  color: kTextColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -194,7 +208,15 @@ class PatientCardBuilder extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            const PrimaryButton(title: 'Reschedule'),
+                            PrimaryButton(
+                              title: 'Reschedule',
+                              onTap: () {
+                                Get.to(() => RescheduleAppointmentScreen(
+                                    // patientID: patientID,
+                                    appID: appID,
+                                    ));
+                              },
+                            ),
                             const SizedBox(
                               width: 36,
                             ),

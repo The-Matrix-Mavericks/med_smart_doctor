@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_app/constants/color.dart';
 import 'package:demo_app/screens/chat_screen/comps/styles.dart';
 import 'package:demo_app/screens/chat_screen/comps/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,17 +28,19 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final firestore = FirebaseFirestore.instance;
     return Scaffold(
-      backgroundColor: Colors.indigo.shade400,
+      backgroundColor: primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.indigo.shade400,
         title: Text(widget.name),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context){
-              return CallPage(callID: roomId.toString());
-            }));
-          }, icon: const Icon(Icons.call))
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CallPage(callID: roomId.toString());
+                }));
+              },
+              icon: const Icon(Icons.call))
         ],
       ),
       body: Column(
