@@ -1,5 +1,4 @@
 import 'package:demo_app/constants/color.dart';
-import 'package:demo_app/screens/chat_screen/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -41,9 +40,9 @@ class CustomAppbar extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MyHomePage();
-                }));
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return const MyHomePage();
+                // }));
               },
               icon: const Icon(
                 Icons.notifications_active_outlined,

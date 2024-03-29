@@ -38,7 +38,7 @@ class ChatWidgets {
             title,
             style: Styles.h1().copyWith(
                 color: Colors.black,
-                fontFamily: 'Ubuntu',
+                fontFamily: 'Rubik',
                 fontWeight: FontWeight.bold,
                 fontSize: 18),
           ),
