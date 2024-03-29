@@ -145,7 +145,8 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                updateDoctorProfile();
+                updateDoctorProfile();                
+                Navigator.pop(context);
               },
               child: Text('Save'),
             ),
