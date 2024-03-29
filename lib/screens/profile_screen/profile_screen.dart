@@ -4,6 +4,7 @@ import 'package:demo_app/Components/doc_info_box.dart';
 import 'package:demo_app/Components/text_styles.dart';
 import 'package:demo_app/Controllers/settings_controller.dart';
 import 'package:demo_app/constants/constants.dart';
+import 'package:demo_app/screens/profile_screen/EditDoctorProfilePage.dart';
 import 'package:demo_app/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,25 +37,16 @@ class _AppointmentScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(
-                  height: 20,
-                ),
                 Container(
-                  height: 120,
-                  width: 120,
-                  child: CircleAvatar(
-                    // radius: 60,
-                    backgroundImage: controller.docImage.string.isNotEmpty
-                        ? NetworkImage(controller.docImage.string, scale: 1.0)
-                        : null, // Set foregroundImage to null when URL is empty
-                    backgroundColor:
-                        Colors.grey, // Set background color for placeholder
-                    child: controller.docImage.string.isNotEmpty
-                        ? null
-                        : Icon(Icons.person,
-                            size: 60, color: Colors.white), // Default icon
-                  ),
-                ),
+  width: 200, // Specify a width
+  height: 200, // Specify a height
+  child: CircleAvatar(
+    backgroundImage: controller.docImage.value.isNotEmpty
+       ? NetworkImage(controller.docImage.value)
+       : const NetworkImage('https://media.tenor.com/images/bc47a4ab3c7d0c749870b3f3a1e4a95e/tenor.gif'),
+  ),
+),
+
                 SizedBox(
                   height: 20,
                 ),
@@ -72,13 +64,27 @@ class _AppointmentScreenState extends State<ProfileScreen> {
                         alignment: Alignment.centerLeft,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 05.0, top: 10),
-                      child: Container(
-                              child: Icon(FontAwesomeIcons.edit,
-                                  size: 25, color: Colors.black54))
-                          .onTap(() {}),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditDoctorProfilePage()),
+          );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 05.0, top: 10),
+                        child: Icon(FontAwesomeIcons.edit,
+                            size: 25, color: Colors.black54),
+                      ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 05.0, top: 10),
+                    //   child: Icon(FontAwesomeIcons.edit,
+                    //       size: 25, color: Colors.black54)
+                    //      .onTap(() {
+                    //       Navigator
+                    //      }),
+                    // ),
                   ],
                 ),
                 Padding(
@@ -95,7 +101,8 @@ class _AppointmentScreenState extends State<ProfileScreen> {
                 Column(
                   children: [
                     DocInfoBox(
-                        infoLabel: "Name", infoText: controller.docName.value),
+                        infoLabel: "Name",
+                        infoText: controller.docName.value?? 'No name'),
                     DocInfoBox(
                         infoLabel: "Email",
                         infoText: controller.docEmail.value),
