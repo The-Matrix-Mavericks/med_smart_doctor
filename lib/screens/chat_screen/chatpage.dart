@@ -4,17 +4,21 @@ import 'package:demo_app/screens/chat_screen/comps/styles.dart';
 import 'package:demo_app/screens/chat_screen/comps/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter_samples/screens/chat_page/comps/styles.dart';
 // import 'package:flutter_samples/screens/chat_page/comps/widgets.dart';
 // import 'package:image/comps/styles.dart';
 // import 'package:image/comps/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:demo_app/screens/chat_screen/vediocall.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class ChatPage extends StatefulWidget {
   final String id;
   final String name;
-  const ChatPage({Key? key, required this.id, required this.name})
+  final int index;
+  const ChatPage(
+      {Key? key, required this.id, required this.name, required this.index})
       : super(key: key);
 
   @override
@@ -28,35 +32,31 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final firestore = FirebaseFirestore.instance;
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        backgroundColor: Colors.indigo.shade400,
-        title: Text(widget.name),
-        elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CallPage(callID: roomId.toString());
-                }));
-              },
-              icon: const Icon(Icons.call))
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+        toolbarHeight: 70,
+        backgroundColor: primaryColor,
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.grey[700],
+              backgroundImage: AssetImage(docImages[widget.index]),
+              // child: Image.asset(
+              //   docImages[widget.index],
+              //   fit: BoxFit.cover,
+              // ),
+            ),
+            8.widthBox,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Chats',
-                  style: Styles.h1(),
+                  widget.name,
+                  style: Styles.h1()
+                      .copyWith(color: Colors.white, fontFamily: 'Poppins'),
                 ),
-                const Spacer(),
+                0.heightBox,
                 StreamBuilder(
                     stream:
                         firestore.collection('user').doc(widget.id).snapshots(),
@@ -66,8 +66,8 @@ class _ChatPageState extends State<ChatPage> {
                       return !snapshot.hasData
                           ? Container()
                           : Text(
-                              'Last seen : ' +
-                                  DateFormat('hh:mm a').format(
+                              'last seen today at ' +
+                                  DateFormat('h:mm a').format(
                                       snapshot.data!['date_time'].toDate()),
                               style: Styles.h1().copyWith(
                                   fontSize: 12,
@@ -75,16 +75,103 @@ class _ChatPageState extends State<ChatPage> {
                                   color: Colors.white70),
                             );
                     }),
-                const Spacer(),
-                const SizedBox(
-                  width: 50,
-                )
+                // StreamBuilder(
+                //     stream: firestore
+                //         .collection('doctor')
+                //         .doc(widget.id)
+                //         .snapshots(),
+                //     builder: (context,
+                //         AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                //             snapshot) {
+                //       return !snapshot.hasData
+                //           ? Container()
+                //           : Text(
+                //               'last seen today at ' +
+                //                   DateFormat('h:mm a').format(
+                //                       snapshot.data!['date_time'].toDate()),
+                //               style: Styles.h1().copyWith(
+                //                   fontSize: 12,
+                //                   fontWeight: FontWeight.normal,
+                //                   color: Colors.white70),
+                //             );
+                //     }),
               ],
             ),
-          ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(right: 0.0),
+          child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_outlined,
+                color: Colors.white,
+                size: 20,
+              )),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CallPage(callID: roomId.toString());
+                  }));
+                },
+                icon: const Icon(
+                  FontAwesomeIcons.video,
+                  color: Colors.white,
+                  size: 20,
+                )),
+          )
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Padding(
+          //   padding: const EdgeInsets.all(18.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       Text(
+          //         'Chats',
+          //         style: Styles.h1(),
+          //       ),
+          //       const Spacer(),
+          //       StreamBuilder(
+          //           stream:
+          //               firestore.collection('user').doc(widget.id).snapshots(),
+          //           builder: (context,
+          //               AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+          //                   snapshot) {
+          //             return !snapshot.hasData
+          //                 ? Container()
+          //                 : Text(
+          //                     'Last seen : ' +
+          //                         DateFormat('hh:mm a').format(
+          //                             snapshot.data!['date_time'].toDate()),
+          //                     style: Styles.h1().copyWith(
+          //                         fontSize: 12,
+          //                         fontWeight: FontWeight.normal,
+          //                         color: Colors.white70),
+          //                   );
+          //           }),
+          //       const Spacer(),
+          //       const SizedBox(
+          //         width: 50,
+          //       )
+          //     ],
+          //   ),
+          // ),
           Expanded(
             child: Container(
-              decoration: Styles.friendsBox(),
+              decoration: BoxDecoration(color: Colors.green[50]),
               child: StreamBuilder(
                   stream: firestore.collection('Rooms').snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -117,13 +204,15 @@ class _ChatPageState extends State<ChatPage> {
                                           itemCount: snap.data!.docs.length,
                                           reverse: true,
                                           itemBuilder: (context, i) {
-                                            return ChatWidgets.messagesCard(
-                                                snap.data!.docs[i]['sent_by'] ==
+                                            return MessageBubble(
+                                                user: snap.data!.docs[i]
+                                                        ['sent_by'] ==
                                                     FirebaseAuth.instance
                                                         .currentUser!.uid,
-                                                snap.data!.docs[i]['message'],
-                                                DateFormat('hh:mm a').format(
-                                                    snap.data!
+                                                msgText: snap.data!.docs[i]
+                                                    ['message'],
+                                                msgSender: DateFormat('hh:mm a')
+                                                    .format(snap.data!
                                                         .docs[i]['datetime']
                                                         .toDate()));
                                           },
@@ -133,15 +222,14 @@ class _ChatPageState extends State<ChatPage> {
                         return Center(
                           child: Text(
                             'No conversion found',
-                            style: Styles.h1()
-                                .copyWith(color: Colors.indigo.shade400),
+                            style: Styles.h1().copyWith(color: primaryColor),
                           ),
                         );
                       }
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(
-                          color: Colors.indigo,
+                          color: primaryColor,
                         ),
                       );
                     }
@@ -149,7 +237,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           Container(
-            color: Colors.white,
+            color: Colors.green[50],
             child: ChatWidgets.messageField(onSubmit: (controller) {
               if (controller.text.toString() != '') {
                 if (roomId != null) {

@@ -94,8 +94,7 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
                                   return ListView.builder(
                                     itemCount: data.length,
                                     itemBuilder: (context, i) {
-                                      Timestamp time =
-                                          data[i]['date_time'];
+                                      Timestamp time = data[i]['date_time'];
                                       return ChatWidgets.card(
                                         title: data[i]['userName'],
                                         time: DateFormat('EEE hh:mm')
@@ -107,6 +106,7 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
                                                 return ChatPage(
                                                   id: data[i].id.toString(),
                                                   name: data[i]['userName'],
+                                                  index: i,
                                                 );
                                               },
                                             ),

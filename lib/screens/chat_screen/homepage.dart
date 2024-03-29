@@ -110,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         builder: (context) {
                                                           return ChatPage(
                                                             id: user,
+                                                            index: i,
                                                             name: snap.data[
                                                                 'userName'],
                                                           );
@@ -199,6 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         MaterialPageRoute(
                                                           builder: (context) {
                                                             return ChatPage(
+                                                              index: i,
                                                               id: user,
                                                               name: snap.data[
                                                                   'userName'],
