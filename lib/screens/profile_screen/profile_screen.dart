@@ -38,15 +38,15 @@ class _AppointmentScreenState extends State<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-  width: 200, // Specify a width
-  height: 200, // Specify a height
-  child: CircleAvatar(
-    backgroundImage: controller.docImage.value.isNotEmpty
-       ? NetworkImage(controller.docImage.value)
-       : const NetworkImage('https://media.tenor.com/images/bc47a4ab3c7d0c749870b3f3a1e4a95e/tenor.gif'),
-  ),
-),
-
+                  width: 200, // Specify a width
+                  height: 200, // Specify a height
+                  child: CircleAvatar(
+                    backgroundImage: controller.docImage.value.isNotEmpty
+                        ? NetworkImage(controller.docImage.value)
+                        : const NetworkImage(
+                            'https://media.tenor.com/images/bc47a4ab3c7d0c749870b3f3a1e4a95e/tenor.gif'),
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -67,9 +67,10 @@ class _AppointmentScreenState extends State<ProfileScreen> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditDoctorProfilePage()),
-          );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditDoctorProfilePage()),
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(right: 05.0, top: 10),
@@ -102,7 +103,7 @@ class _AppointmentScreenState extends State<ProfileScreen> {
                   children: [
                     DocInfoBox(
                         infoLabel: "Name",
-                        infoText: controller.docName.value?? 'No name'),
+                        infoText: controller.docName.value ?? 'No name'),
                     DocInfoBox(
                         infoLabel: "Email",
                         infoText: controller.docEmail.value),

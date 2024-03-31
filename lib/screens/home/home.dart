@@ -5,6 +5,7 @@ import 'package:demo_app/Controllers/auth_controller.dart';
 import 'package:demo_app/screens/appointment/appointment.dart';
 import 'package:demo_app/screens/chat_screen/char_screen.dart';
 import 'package:demo_app/screens/home/home_screen.dart';
+import 'package:demo_app/screens/medicine_shop/medicine_shop.dart';
 import 'package:demo_app/screens/profile_screen/profile_screen.dart';
 import 'package:demo_app/screens/setting_screen/setting_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +30,7 @@ class Home extends StatefulWidget {
 class _MainScreenState extends State<Home> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    AppointmentScreen(),
+    MedicineShop(),
     ChatScreen(),
     ProfileScreen(),
     SettingssView()
@@ -37,7 +38,7 @@ class _MainScreenState extends State<Home> {
 
   static const List<IconData> iconList = [
     UniconsLine.home_alt,
-    Icons.calendar_month_outlined,
+    Icons.medical_information_rounded,
     // UniconsLine.chat_info,
     FontAwesomeIcons.commentDots,
     UniconsLine.user,
@@ -55,9 +56,9 @@ class _MainScreenState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // var controller = Get.put(AuthController());
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 16.0,
@@ -71,20 +72,20 @@ class _MainScreenState extends State<Home> {
             ),
           ),
         ),
-        bottomNavigationBar: AnimatedBottomNavigationBar(
-          splashColor: Colors.deepPurple[100],
-          gapLocation: GapLocation.none,
-          splashSpeedInMilliseconds: 500,
-          iconSize: 30,
-          height: 60,
-          icons: iconList,
-          activeIndex: _selectedIndex,
-          // leftCornerRadius: 32,
-          // rightCornerRadius: 32,
-          onTap: (index) => _onItemTapped(index),
-          activeColor: primaryColor,
-          inactiveColor: Color.fromARGB(255, 165, 165, 165),
-        ),
+      ),
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        splashColor: Colors.deepPurple[100],
+        gapLocation: GapLocation.none,
+        splashSpeedInMilliseconds: 500,
+        iconSize: 30,
+        height: 60,
+        icons: iconList,
+        activeIndex: _selectedIndex,
+        // leftCornerRadius: 32,
+        // rightCornerRadius: 32,
+        onTap: (index) => _onItemTapped(index),
+        activeColor: primaryColor,
+        inactiveColor: Color.fromARGB(255, 165, 165, 165),
       ),
     );
   }

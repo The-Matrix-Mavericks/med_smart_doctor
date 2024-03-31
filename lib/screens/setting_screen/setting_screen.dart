@@ -2,6 +2,7 @@ import 'package:demo_app/Components/text_styles.dart';
 import 'package:demo_app/Controllers/auth_controller.dart';
 import 'package:demo_app/Controllers/settings_controller.dart';
 import 'package:demo_app/constants/color.dart';
+import 'package:demo_app/screens/appointment/appointment.dart';
 import 'package:demo_app/screens/authentication/loginOrSignupPage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,6 +19,7 @@ class SettingssView extends StatefulWidget {
 
 class _SettingssViewState extends State<SettingssView> {
   var settingsList = [
+    "Appointment Schedule",
     "Change Password",
     "Payment Setup",
     "Payment History",
@@ -27,6 +29,7 @@ class _SettingssViewState extends State<SettingssView> {
   ];
 
   var settingsListIcons = [
+    Icons.calendar_month_outlined,
     Icons.lock_outline,
     Icons.edit_note_sharp,
     FontAwesomeIcons.indianRupeeSign,
@@ -36,6 +39,7 @@ class _SettingssViewState extends State<SettingssView> {
   ];
 
   var colors = [
+    Colors.cyan,
     Colors.purple,
     Colors.deepPurple,
     Colors.indigo,
@@ -87,7 +91,10 @@ class _SettingssViewState extends State<SettingssView> {
                       children: List.generate(
                         settingsList.length,
                         (index) => GestureDetector(
-                          onTap: () async {
+                          onTap: () {
+                            if (index == 0) {
+                              Get.to(() => AppointmentScreen());
+                            }
                             if (index == 4) {
                               AuthController().signout(context);
                               Get.offAll(() => LoginOrSignupScreen());
