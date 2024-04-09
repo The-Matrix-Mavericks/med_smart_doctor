@@ -22,9 +22,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<ProfileScreen> {
+    var controller = Get.put(SettingsController());
+    void initState() {
+    super.initState();
+    // Fetch data when the widget is initialized
+    controller.getUserData();
+  }
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(SettingsController());
 
     return SafeArea(
       child: Obx(() {

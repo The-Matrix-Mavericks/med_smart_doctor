@@ -94,6 +94,9 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
           'docTiming': _timingController.text,
           'docFees':_feesController.text,
         });
+        setState(() {
+          
+        });
         // Show success message or navigate to another page
       }
     } catch (e) {
