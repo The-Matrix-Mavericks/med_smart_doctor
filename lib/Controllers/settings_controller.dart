@@ -21,6 +21,7 @@ class SettingsController extends GetxController {
   var docAddress = ''.obs;
   var docCategory = ''.obs;
   var docPhone = ''.obs;
+  var docFees = ''.obs;
   Future? getData;
 
   Future<void> getUserData() async {
@@ -46,6 +47,7 @@ class SettingsController extends GetxController {
       docTiming.value = doc!['docTiming'] ?? "";
       docPhone.value = doc!['docPhone'] ?? "";
       docCategory.value = doc!['docCategory'] ?? "";
+      docFees.value = doc!['docFees'] ?? "";
       isLoading(false);
 
       print("Is Loading Status ---> ${isLoading}");

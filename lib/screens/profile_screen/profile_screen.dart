@@ -125,6 +125,9 @@ class _AppointmentScreenState extends State<ProfileScreen> {
                     DocInfoBox(
                         infoLabel: "Timing",
                         infoText: controller.docTiming.value),
+                    DocInfoBox(
+                        infoLabel: "My Fees",
+                        infoText: controller.docFees.value),
                   ],
                 ),
               ],

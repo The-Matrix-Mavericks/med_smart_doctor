@@ -130,6 +130,7 @@ class AuthController extends GetxController {
         'docEmail': email,
         'docImage': imageUrl,
         'date_time': DateTime.now(),
+        'docFees': '10,000',
       });
 
       print("Data has been sent to the firestore");
