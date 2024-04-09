@@ -2,6 +2,8 @@ import 'package:demo_app/constants/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../screens/qr_code_scanner/qr_code_scanner.dart';
+
 class CustomAppbar extends StatelessWidget {
   const CustomAppbar({
     super.key,
@@ -40,12 +42,12 @@ class CustomAppbar extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return const MyHomePage();
-                // }));
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return QRViewExample();
+                }));
               },
               icon: const Icon(
-                Icons.notifications_active_outlined,
+                Icons.qr_code,
                 size: 30,
               ),
             ),
