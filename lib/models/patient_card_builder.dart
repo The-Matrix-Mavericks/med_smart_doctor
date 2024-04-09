@@ -50,7 +50,7 @@ class PatientCardBuilder extends StatelessWidget {
       onTap: () {},
       child: Container(
         width: 325.0,
-        height: 170,
+        height: 175,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: Color.fromARGB(255, 219, 221, 255),
@@ -212,8 +212,8 @@ class PatientCardBuilder extends StatelessWidget {
                               title: 'Reschedule',
                               onTap: () {
                                 Get.to(() => RescheduleAppointmentScreen(
-                                    // patientID: patientID,
-                                    appID: appID,
+                                      // patientID: patientID,
+                                      appID: appID,
                                     ));
                               },
                             ),
