@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_app/Components/components.dart';
 import 'package:demo_app/Components/text_styles.dart';
 import 'package:demo_app/constants/constants.dart';
@@ -7,11 +6,13 @@ import 'package:demo_app/models/consultant.dart';
 import 'package:demo_app/theme/colors.dart';
 import 'package:demo_app/widgets/banner_card.dart';
 import 'package:demo_app/widgets/consultant_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
@@ -21,6 +22,67 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _ConsultingScreenState extends State<AppointmentScreen> {
+
+
+
+  // Firebase Authentication instance
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Other code remains the same...
+
+  // Function to store appointment details in Firestore
+  Future<void> _storeAppointmentDetails(String userId) async {
+    try {
+      // Get the current user's document ID
+      String userDocId = userId;
+
+      // Get other appointment details
+      // For example: dropdownvalue, day, duration, patient
+
+      // Example: Storing appointment details in Firestore
+
+// Assuming _firestore is an instance of FirebaseFirestore
+final QuerySnapshot querySnapshot = await _firestore
+    .collection('timeSlots')
+    .where('userId', isEqualTo: userDocId)
+    .get();
+
+if (querySnapshot.docs.isNotEmpty) {
+  // If a document with the specified userId exists, update it
+  final DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+  await _firestore.collection('timeSlots').doc(documentSnapshot.id).update({
+    'numberOfSlots': dropdownvalue,
+    'dayOff': day,
+    'duration': duration,
+    'patientsPerSlot': patient,
+    // Add more fields as needed
+  });
+} else {
+  // If no document with the specified userId exists, add a new document
+  await _firestore.collection('timeSlots').add({
+    'userId': userDocId,
+    'numberOfSlots': dropdownvalue,
+    'dayOff': day,
+    'duration': duration,
+    'patientsPerSlot': patient,
+    // Add more fields as needed
+  });
+}
+
+
+      // Show a success message or perform any additional actions
+      print('Appointment details stored successfully.');
+    } catch (e) {
+      // Handle errors
+      print('Error storing appointment details: $e');
+    }
+  }
+
+
+
   String dropdownvalue = '6';
   var items = [
     '6',
@@ -40,11 +102,7 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
   ];
 
   String duration = '1 hr';
-  var durations = [
-    '1 hr',
-    '45 mins',
-    '1.5 hr',
-  ];
+  var durations = ['1 hr', '45 mins', '2 hr'];
 
   String patient = '5';
   var patients = [
@@ -80,17 +138,6 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 05.0, top: 10),
-                    //   child: Align(
-                    //     child: const Text('Appointment Schedule',
-                    //         style: const TextStyle(
-                    //             fontSize: 28,
-                    //             fontWeight: FontWeight.bold,
-                    //             color: kTextColor)),
-                    //     alignment: Alignment.centerLeft,
-                    //   ),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.only(left: 05.0, top: 5),
                       child: Text(
@@ -106,7 +153,6 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
                       height: MediaQuery.of(context).size.height * 0.3,
                       child: Image.asset(
                         'assets/appointment.png',
-                        // semanticsLabel: 'My SVG Image',
                       ),
                     ),
                     Padding(
@@ -125,21 +171,22 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
                             height: 40,
                             width: 40,
                             child: DropdownButton(
-                              // Initial Value
                               value: dropdownvalue,
-
-                              // Down Arrow Icon
                               icon: const Icon(Icons.keyboard_arrow_down),
-
-                              // Array list of items
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
+                              items: [
+                                DropdownMenuItem(
+                                  value: items[0],
+                                  child: Text(items[0]),
+                                ),
+                                DropdownMenuItem(
+                                  value: items[1],
+                                  child: Text(items[1]),
+                                ),
+                                DropdownMenuItem(
+                                  value: items[2],
+                                  child: Text(items[2]),
+                                ),
+                              ],
                               onChanged: (String? newValue) {
                                 setState(() {
                                   dropdownvalue = newValue!;
@@ -167,24 +214,25 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
                             height: 40,
                             width: 80,
                             child: DropdownButton(
-                              // Initial Value
                               value: duration,
-
-                              // Down Arrow Icon
                               icon: const Icon(Icons.keyboard_arrow_down),
-
-                              // Array list of items
-                              items: durations.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
+                              items: [
+                                DropdownMenuItem(
+                                  value: durations[0],
+                                  child: Text(durations[0]),
+                                ),
+                                DropdownMenuItem(
+                                  value: durations[1],
+                                  child: Text(durations[1]),
+                                ),
+                                DropdownMenuItem(
+                                  value: durations[2],
+                                  child: Text(durations[2]),
+                                ),
+                              ],
                               onChanged: (String? newValue) {
                                 setState(() {
-                                  day = newValue!;
+                                  duration = newValue!;
                                 });
                               },
                             ),
@@ -209,21 +257,38 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
                             height: 40,
                             width: 108,
                             child: DropdownButton(
-                              // Initial Value
                               value: day,
-
-                              // Down Arrow Icon
                               icon: const Icon(Icons.keyboard_arrow_down),
-
-                              // Array list of items
-                              items: days.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
+                              items: [
+                                DropdownMenuItem(
+                                  value: days[0],
+                                  child: Text(days[0]),
+                                ),
+                                DropdownMenuItem(
+                                  value: days[1],
+                                  child: Text(days[1]),
+                                ),
+                                DropdownMenuItem(
+                                  value: days[2],
+                                  child: Text(days[2]),
+                                ),
+                                DropdownMenuItem(
+                                  value: days[3],
+                                  child: Text(days[3]),
+                                ),
+                                DropdownMenuItem(
+                                  value: days[4],
+                                  child: Text(days[4]),
+                                ),
+                                DropdownMenuItem(
+                                  value: days[5],
+                                  child: Text(days[5]),
+                                ),
+                                DropdownMenuItem(
+                                  value: days[6],
+                                  child: Text(days[6]),
+                                ),
+                              ],
                               onChanged: (String? newValue) {
                                 setState(() {
                                   day = newValue!;
@@ -251,24 +316,33 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
                             height: 40,
                             width: 40,
                             child: DropdownButton(
-                              // Initial Value
                               value: patient,
-
-                              // Down Arrow Icon
                               icon: const Icon(Icons.keyboard_arrow_down),
-
-                              // Array list of items
-                              items: patients.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
+                              items: [
+                                DropdownMenuItem(
+                                  value: patients[0],
+                                  child: Text(patients[0]),
+                                ),
+                                DropdownMenuItem(
+                                  value: patients[1],
+                                  child: Text(patients[1]),
+                                ),
+                                DropdownMenuItem(
+                                  value: patients[2],
+                                  child: Text(patients[2]),
+                                ),
+                                DropdownMenuItem(
+                                  value: patients[3],
+                                  child: Text(patients[3]),
+                                ),
+                                DropdownMenuItem(
+                                  value: patients[4],
+                                  child: Text(patients[4]),
+                                ),
+                              ],
                               onChanged: (String? newValue) {
                                 setState(() {
-                                  day = newValue!;
+                                  patient = newValue!;
                                 });
                               },
                             ),
@@ -279,36 +353,6 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    // ListView.builder(
-                    //   scrollDirection: Axis.vertical,
-                    //   shrinkWrap: true,
-                    //   physics: const BouncingScrollPhysics(),
-                    //   itemCount: consultantList.length,
-                    //   itemBuilder: (context, index) {
-                    //     Consultant list = consultantList[index];
-                    //     String formattedDate =
-                    //         DateFormat("d MMMM ''yy").format(list.datetime);
-                    //     String formattedStartTime =
-                    //         DateFormat("h:mm a").format(list.datetime);
-                    //     String formattedEndTime = DateFormat("h:mm a")
-                    //         .format(list.datetime.add(const Duration(hours: 1)));
-                    //     String formattedDateTimeRange =
-                    //         '$formattedStartTime - $formattedEndTime';
-
-                    //     return Container(
-                    //       margin: const EdgeInsets.only(
-                    //         bottom: 12,
-                    //       ),
-                    //       child: ConsultantItem(
-                    //         name: list.name,
-                    //         degree: list.degree,
-                    //         imageUrl: list.imageUrl,
-                    //         date: formattedDate,
-                    //         time: formattedDateTimeRange,
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                   ],
                 ),
               );
@@ -317,6 +361,7 @@ class _ConsultingScreenState extends State<AppointmentScreen> {
         ),
         bottomNavigationBar: GestureDetector(
           onTap: () async {
+            _storeAppointmentDetails(_auth.currentUser!.uid);
             Get.back();
           },
           child: Padding(
