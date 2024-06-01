@@ -27,4 +27,4 @@ The MedSmart Doctor App is part of the MedSmart telemedicine platform designed t
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/The-Matrix-Mavericks/medsmart-doctor-app.git
+   git clone https://github.com/The-Matrix-Mavericks/med_smart_doctor.git
